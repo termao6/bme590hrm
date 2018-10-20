@@ -3,10 +3,10 @@ import csv
 
 def main():
     print("Main")
-    read_file('test_data/test_data1.csv')
+    parse_data('test_data/test_data1.csv')
 
 
-def read_file(file):
+def parse_data(file):
     print("reading")
     time_data = [];
     try:
@@ -19,7 +19,13 @@ def read_file(file):
                     print("could not convert data to a float")
     except OSError:
         print("cannot open")
-    print(time_data)
+    else:
+        print(time_data)
+        return time_data
+
+
+def calculate_values(data):
+    print("Calculating")
 
 
 if __name__ == "__main__":
