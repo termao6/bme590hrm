@@ -3,21 +3,24 @@ import csv
 
 def main():
     # print("Main")
-    data = parse_data('test_data/test_data1.csv')
+    data = parse_data('test_data/test_data15.csv')
     # print(data)
     calculate_values(data[0], data[1], data[2], data[3])
 
 
 def parse_data(file):
     """
-    Parses data from file and gives cleaned (noise reduced) version of times, voltages
+    Parses data from file and gives cleaned (noise reduced)
+    version of times, voltages
 
     Parameters:
         file (string): path to csv file to be parsed
 
     Returns:
-        avg_times [float]: list of running avg times corresponding with voltages
-        avg_voltage [float]: list of running avg voltages corresponding w/ times
+        avg_times [float]: list of running avg times
+            corresponding with voltages
+        avg_voltage [float]: list of running avg voltages
+            corresponding w/ times
         all_times [float]: list of all times in csv file
         all_voltages [float]: list of all voltages in csv file
     """
@@ -44,6 +47,7 @@ def parse_data(file):
                     print("could not convert data to a float")
     except IOError as e:
         print(e)
+        raise
     else:
         # print((time, run_avg))
         return times_avg, run_avg, time, time_data
@@ -55,7 +59,7 @@ def calculate_values(times, values, times_all, values_all):
 
     metrics = {
         "mean_hr_bpm": round(len(peak_times)/max(times_all)*60),
-        "voltage_extremes": (round(max(values),3), round(min(values),3)),
+        "voltage_extremes": (round(max(values), 3), round(min(values), 3)),
         "duration": max(times_all),
         "num_beats": len(peak_times),
         "beats": peak_times
@@ -66,14 +70,14 @@ def calculate_values(times, values, times_all, values_all):
 
 def find_peaks(times, values):
     vMax = max(values)
-    thresh = vMax - abs(vMax - min(values))*.25
+    thresh = vMax - abs(vMax - min(values))*.3
     print(vMax)
     print(thresh)
     peak_times = []
     peak_vals = []
     calc_peak_times = []
     calc_peak_vals = []
-    for i in range (1, len(values)):
+    for i in range(1, len(values)):
         if values[i] > thresh:
             calc_peak_vals.append(values[i])
             calc_peak_times.append(times[i])
@@ -86,7 +90,8 @@ def find_peaks(times, values):
             calc_peak_times = []
             calc_peak_vals = []
 
-    print(peak_times, peak_vals)
+    print(peak_times)
+    print(peak_vals)
     return peak_times, peak_vals
 
 
