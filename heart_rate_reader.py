@@ -40,6 +40,5 @@ def calculate_values(data):
     print(vMax)
 
 
-
 if __name__ == "__main__":
     main()
