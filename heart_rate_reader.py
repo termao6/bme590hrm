@@ -5,7 +5,7 @@ def main():
     # print("Main")
     data = parse_data('test_data/test_data1.csv')
     print(data)
-    calculate_values(data[0], data[1])
+    calculate_values(data[0], data[1], data[2], data[3])
 
 
 def parse_data(file):
@@ -42,11 +42,11 @@ def parse_data(file):
                     ctr = ctr + 1
                 except ValueError:
                     print("could not convert data to a float")
-    except OSError:
-        print("cannot open")
+    except IOError as e:
+        print(e)
     else:
         # print((time, run_avg))
-        return times_avg, run_avg
+        return times_avg, run_avg, time, time_data
 
 
 def calculate_values(times, values, times_all, values_all):
@@ -74,7 +74,7 @@ def find_peaks(times, values):
             calc_peak_times.append(times[i])
         elif values[i-1] > vMax - abs(vMax)*.15:
             # just after peak
-            ind = calc_peak_times.index(max(values))
+            ind = calc_peak_vals.index(max(calc_peak_vals))
             peak_times.append(calc_peak_times[ind])
             peak_vals.append(calc_peak_vals[ind])
             # reset lists to empty
