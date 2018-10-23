@@ -8,6 +8,7 @@ from heart_rate_reader import parse_data
 
 
 def test_parse_data():
+
     arr1 = parse_data('test_data/test_data1.csv')
     assert arr1[0][0] == .006
     assert arr1[1][0] == -.145
