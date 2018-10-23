@@ -4,7 +4,7 @@ import csv
 def main():
     # print("Main")
     data = parse_data('test_data/test_data1.csv')
-    print(data)
+    # print(data)
     calculate_values(data[0], data[1], data[2], data[3])
 
 
@@ -54,33 +54,39 @@ def calculate_values(times, values, times_all, values_all):
     (peak_times, peak_values) = find_peaks(times, values)
 
     metrics = {
-        "mean_hr_bpm": 60,
-        "voltage_extremes": (max(values), min(values)),
+        "mean_hr_bpm": round(len(peak_times)/max(times_all)*60),
+        "voltage_extremes": (round(max(values),3), round(min(values),3)),
         "duration": max(times_all),
-        "num_beats": len(peak_values),
-        "beats": peak_values
+        "num_beats": len(peak_times),
+        "beats": peak_times
     }
+
+    print(metrics)
 
 
 def find_peaks(times, values):
     vMax = max(values)
+    thresh = vMax - abs(vMax - min(values))*.25
+    print(vMax)
+    print(thresh)
     peak_times = []
     peak_vals = []
     calc_peak_times = []
     calc_peak_vals = []
     for i in range (1, len(values)):
-        if values[i] > vMax - abs(vMax)*.15:
+        if values[i] > thresh:
             calc_peak_vals.append(values[i])
             calc_peak_times.append(times[i])
-        elif values[i-1] > vMax - abs(vMax)*.15:
+        elif (values[i-1] > thresh) and (values[i] <= thresh):
             # just after peak
             ind = calc_peak_vals.index(max(calc_peak_vals))
-            peak_times.append(calc_peak_times[ind])
-            peak_vals.append(calc_peak_vals[ind])
+            peak_times.append(round(calc_peak_times[ind], 3))
+            peak_vals.append(round(calc_peak_vals[ind], 3))
             # reset lists to empty
-            peak_times = []
-            peak_vals = []
+            calc_peak_times = []
+            calc_peak_vals = []
 
+    print(peak_times, peak_vals)
     return peak_times, peak_vals
 
 
