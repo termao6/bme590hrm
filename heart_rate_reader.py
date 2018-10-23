@@ -12,6 +12,7 @@ def parse_data(file):
     # print("reading")
     time = []
     time_data = []
+    times_avg = []
     run_avg = []
     ctr = 0
     try:
@@ -22,6 +23,7 @@ def parse_data(file):
                     time.append(float(row[0]))
                     time_data.append(float(row[1]))
                     if ctr >= 4:
+                        times_avg.append(time[ctr-2])
                         run_avg.append((time_data[ctr] +
                                        time_data[ctr-1] + time_data[ctr-2] +
                                        time_data[ctr-3] + time_data[ctr-4])/5)
@@ -32,7 +34,7 @@ def parse_data(file):
         print("cannot open")
     else:
         # print((time, run_avg))
-        return time, run_avg
+        return times_avg, run_avg
 
 
 def calculate_values(data):
