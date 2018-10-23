@@ -2,12 +2,12 @@ import csv
 
 
 def main():
-    print("Main")
+    # print("Main")
     parse_data('test_data/test_data1.csv')
 
 
 def parse_data(file):
-    print("reading")
+    # print("reading")
     time_data = [];
     try:
         with open(file) as csvfile:
