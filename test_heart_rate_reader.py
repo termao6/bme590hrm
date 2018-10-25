@@ -16,3 +16,5 @@ def test_parse_data():
 def test_wrong_file():
     with pytest.raises(IOError):
         parse_data('test_data/test_data.csv')
+
+

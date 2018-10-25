@@ -2,10 +2,8 @@ import csv
 
 
 def main():
-    # print("Main")
     data = parse_data('test_data/test_data15.csv')
-    # print(data)
-    calculate_values(data[0], data[1], data[2], data[3])
+    calculate_values(data[0], data[1], data[2])
 
 
 def parse_data(file):
@@ -14,15 +12,15 @@ def parse_data(file):
     version of times, voltages
 
     Parameters:
-        file (string): path to csv file to be parsed
+        :param file: (string) path to csv file to be parsed
 
     Returns:
-        avg_times [float]: list of running avg times
+        :return: avg_times [float]: list of running avg times
             corresponding with voltages
-        avg_voltage [float]: list of running avg voltages
+        :return: avg_voltage [float]: list of running avg voltages
             corresponding w/ times
-        all_times [float]: list of all times in csv file
-        all_voltages [float]: list of all voltages in csv file
+        :return: all_times [float]: list of all times in csv file
+        :return: all_voltages [float]: list of all voltages in csv file
     """
     # print("reading")
     time = []
@@ -53,25 +51,56 @@ def parse_data(file):
         return times_avg, run_avg, time, time_data
 
 
-def calculate_values(times, values, times_all, values_all):
-    print("Calculating")
-    (peak_times, peak_values) = find_peaks(times, values)
-
+def calculate_values(times, values, times_all = []):
+    """
+    Calculates metrics:
+        mean_hr_bpm, voltage_extremes (max, min), duration of data,
+        num_beats, beats [times]
+    :param times: [float] array of times corresponding with voltage values
+    :param values: [float] array of voltage values corresponding with times
+    :param times_all: (optional) if times list does not cover the entire duration
+        of the ecg strip
+    :return: metrics dictionary
+    """
+    peak_times = find_peaks(times, values)
+    duration = 0
+    if len(times_all) == 0:
+        # times_all not entered; use the duration from times list
+        duration = max(times)
+    else:
+        duration = max(times_all)
     metrics = {
         "mean_hr_bpm": round(len(peak_times)/max(times_all)*60),
         "voltage_extremes": (round(max(values), 3), round(min(values), 3)),
-        "duration": max(times_all),
+        "duration": duration,
         "num_beats": len(peak_times),
         "beats": peak_times
     }
 
+    message = ""
+    if metrics.get("mean_hr_bpm") > 160 or metrics.get("mean_hr_bpm") < 40:
+        message = "Heart rate out of normal range - recheck data"
     print(metrics)
+    return metrics, message
 
 
 def find_peaks(times, values):
-    vMax = max(values)
-    thresh = vMax - abs(vMax - min(values))*.3
-    print(vMax)
+    """"
+    Simple Peak Detection - finds the local max of series of consecutive
+    values above a certain threshold, calculated relative to the global max
+    Helper method to calculate_values
+
+    Parameters:
+        :param times: [float] list of times corresponding with values
+        :param values: [float] list of voltage values corresponding with times
+
+    Returns:
+        :return: peak_times [float]: list of times corresponding to local maxima
+            (voltage peaks)
+    """
+    v_max = max(values)
+    thresh = v_max - abs(v_max - min(values))*.3
+    print(v_max)
     print(thresh)
     peak_times = []
     peak_vals = []
@@ -90,9 +119,9 @@ def find_peaks(times, values):
             calc_peak_times = []
             calc_peak_vals = []
 
-    print(peak_times)
-    print(peak_vals)
-    return peak_times, peak_vals
+    # print(peak_times)
+    # print(peak_vals)
+    return peak_times
 
 
 if __name__ == "__main__":
