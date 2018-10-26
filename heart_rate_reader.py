@@ -1,9 +1,15 @@
 import csv
+import json
 
 
 def main():
-    data = parse_data('test_data/test_data1.csv')
-    calculate_values(data[0], data[1])
+    for data_file_num in range(1, 33):
+        print(data_file_num)
+        file_path = 'test_data/test_data' + str(data_file_num) + '.csv'
+        save_path = 'results/test_data' + str(data_file_num) + '.json'
+        data = parse_data(file_path)
+        (metrics, message) = calculate_values(data[0], data[1])
+        save_json(metrics, save_path)
 
 
 def parse_data(file):
@@ -34,15 +40,20 @@ def parse_data(file):
             for row in reader:
                 try:
                     time.append(float(row[0]))
-                    time_data.append(float(row[1]))
-                    if ctr >= 4:
-                        times_avg.append(time[ctr-2])
-                        run_avg.append((time_data[ctr] +
-                                       time_data[ctr-1] + time_data[ctr-2] +
-                                       time_data[ctr-3] + time_data[ctr-4])/5)
-                    ctr = ctr + 1
                 except ValueError:
-                    print("could not convert data to a float")
+                    print("could not convert time to a float")
+                    time.append(time[ctr-1])
+                try:
+                    time_data.append(float(row[1]))
+                except ValueError:
+                    print("could not convert time to a float")
+                    time_data.append(time_data[ctr-1])
+                if ctr >= 4:
+                    times_avg.append(time[ctr-2])
+                    run_avg.append((time_data[ctr] +
+                                   time_data[ctr-1] + time_data[ctr-2] +
+                                   time_data[ctr-3] + time_data[ctr-4])/5)
+                ctr = ctr + 1
             # fill in unaveraged values of times_avg to get all times
             times_avg.insert(0, time[1])
             times_avg.insert(0, time[0])
@@ -57,7 +68,7 @@ def parse_data(file):
         print(e)
         raise
     else:
-        print((time, run_avg))
+        # print((time, run_avg))
         return times_avg, run_avg, time, time_data
 
 
@@ -101,15 +112,15 @@ def find_peaks(times, values):
             (voltage peaks)
     """
     v_max = max(values)
-    thresh = v_max - abs(v_max - min(values))*.3
-    print(v_max)
+    thresh = abs(v_max - min(values))*.005
+    # print(v_max)
     print(thresh)
     peak_times = []
     peak_vals = []
     depolar = False
-    for i in range(1, len(values)):
+    for i in range(2, len(values)):
         if values[i] > thresh:
-            if values[i] < values[i-1] and not depolar:
+            if abs(values[i-1] - values[i]) > thresh and values[i-1] > values[i-2] and not depolar:
                 peak_times.append(times[i-1])
                 peak_vals.append(values[i-1])
                 depolar = True
@@ -119,6 +130,11 @@ def find_peaks(times, values):
     # print(peak_times)
     # print(peak_vals)
     return peak_times
+
+
+def save_json(data, save_path):
+    with open(save_path, 'w') as fp:
+        json.dump(data, fp)
 
 
 if __name__ == "__main__":
