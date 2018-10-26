@@ -13,6 +13,7 @@
 
 ## Notes
 * User is responsible for having csv files of correct format: two columns of (time, voltage)
-** The program will run so long as the csv contains at least two columns of data
-** Calculate_values will return a message saying that the data is not normal, however
-* peak detection does not work correctly on all test cases, especially ones of irregular heart beats
+  * The program will run so long as the csv contains at least two columns of data
+  * Calculate_values will return a message saying that the data is not normal, however
+* Peak detection does not work correctly on all test cases, especially ones of irregular heart beats
+* Metrics for all test data are stored in the /results folder
