@@ -20,6 +20,7 @@ def parse_data(file):
     """
     Parses data from file and gives cleaned (noise reduced)
     version of times, voltages
+    CSV file contains two columns: times, voltages
 
     :param file: (string) path to csv file to be parsed
     :returns: avg_times [float]: list of running avg times
@@ -93,8 +94,10 @@ def calculate_values(times, values):
     }
 
     message = ""
-    if metrics.get("mean_hr_bpm") > 160 or metrics.get("mean_hr_bpm") < 40:
-        message = "Heart rate out of normal range - recheck data"
+    if metrics.get("mean_hr_bpm") > 150 or metrics.get("mean_hr_bpm") < 40:
+        message = "Heart rate far out of normal range - recheck data"
+    elif metrics.get("mean_hr_bpm") > 100 or metrics.get("mean_hr_bpm") < 60:
+        message = "Heart rate out of normal range"
     print(metrics)
     return metrics, message
 
