@@ -10,6 +10,7 @@
 * checks if heart rate data is out of normal range (hr > 100 or < 60) - sends message saying to the data is not normal
 * handles empty number fields in csv by duplicating previous values so that the voltage values approximately correspond with time values
 * reduces noise by having a running average filter
+* set up Travis CI
 
 ## Notes
 * User is responsible for having csv files of correct format: two columns of (time, voltage)
