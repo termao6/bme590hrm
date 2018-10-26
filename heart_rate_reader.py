@@ -3,6 +3,10 @@ import json
 
 
 def main():
+    """
+    Main function for heart_rate_reader.py
+    Loops through each test_data file and saves in results folder
+    """
     for data_file_num in range(1, 33):
         print(data_file_num)
         file_path = 'test_data/test_data' + str(data_file_num) + '.csv'
@@ -17,16 +21,13 @@ def parse_data(file):
     Parses data from file and gives cleaned (noise reduced)
     version of times, voltages
 
-    Parameters:
-        :param file: (string) path to csv file to be parsed
-
-    Returns:
-        :return: avg_times [float]: list of running avg times
-            corresponding with voltages
-        :return: avg_voltage [float]: list of running avg voltages
-            corresponding w/ times
-        :return: all_times [float]: list of all times in csv file
-        :return: all_voltages [float]: list of all voltages in csv file
+    :param file: (string) path to csv file to be parsed
+    :returns: avg_times [float]: list of running avg times
+        corresponding with voltages
+        avg_voltage [float]: list of running avg voltages
+        corresponding w/ times
+        all_times [float]: list of all times in csv file
+        all_voltages [float]: list of all voltages in csv file
     """
     # print("reading")
     time = []
@@ -77,6 +78,7 @@ def calculate_values(times, values):
     Calculates metrics:
         mean_hr_bpm, voltage_extremes (max, min), duration of data,
         num_beats, beats [times]
+
     :param times: [float] array of times corresponding with voltage values
     :param values: [float] array of voltage values corresponding with times
     :return: metrics dictionary, message (stating if metrics are weird)
@@ -103,13 +105,10 @@ def find_peaks(times, values):
     values above a certain threshold, calculated relative to the global max
     Helper method to calculate_values
 
-    Parameters:
-        :param times: [float] list of times corresponding with values
-        :param values: [float] list of voltage values corresponding with times
-
-    Returns:
-        :return: peak_times [float] list of times corresponding to local maxima
-            (voltage peaks)
+    :param times: [float] list of times corresponding with values
+    :param values: [float] list of voltage values corresponding with times
+    :return: peak_times [float] list of times corresponding to local maxima
+        (voltage peaks)
     """
     local_subset = 500
     peak_thresh = max(values[0:local_subset]) - \
@@ -137,6 +136,12 @@ def find_peaks(times, values):
 
 
 def save_json(data, save_path):
+    """
+    Saves the data inputted as a json file to the save_path specified
+
+    :param data: dictionary of metrics to save
+    :param save_path: path to filee (ie where to save json file)
+    """
     with open(save_path, 'w') as fp:
         json.dump(data, fp)
 

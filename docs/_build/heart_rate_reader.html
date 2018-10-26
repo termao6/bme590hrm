@@ -1,0 +1,201 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>heart_rate_reader module &#8212; bme590hrm  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-heart_rate_reader">
+<span id="heart-rate-reader-module"></span><h1>heart_rate_reader module<a class="headerlink" href="#module-heart_rate_reader" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="heart_rate_reader.calculate_values">
+<code class="descclassname">heart_rate_reader.</code><code class="descname">calculate_values</code><span class="sig-paren">(</span><em>times</em>, <em>values</em><span class="sig-paren">)</span><a class="headerlink" href="#heart_rate_reader.calculate_values" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Calculates metrics:</dt>
+<dd>mean_hr_bpm, voltage_extremes (max, min), duration of data,
+num_beats, beats [times]</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>times</strong> – [float] array of times corresponding with voltage values</li>
+<li><strong>values</strong> – [float] array of voltage values corresponding with times</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">metrics dictionary, message (stating if metrics are weird)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="heart_rate_reader.find_peaks">
+<code class="descclassname">heart_rate_reader.</code><code class="descname">find_peaks</code><span class="sig-paren">(</span><em>times</em>, <em>values</em><span class="sig-paren">)</span><a class="headerlink" href="#heart_rate_reader.find_peaks" title="Permalink to this definition">¶</a></dt>
+<dd><p>”
+Simple Peak Detection - finds the local max of series of consecutive
+values above a certain threshold, calculated relative to the global max
+Helper method to calculate_values</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>times</strong> – [float] list of times corresponding with values</li>
+<li><strong>values</strong> – [float] list of voltage values corresponding with times</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">peak_times [float] list of times corresponding to local maxima
+(voltage peaks)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="heart_rate_reader.main">
+<code class="descclassname">heart_rate_reader.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#heart_rate_reader.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main function for heart_rate_reader.py
+Loops through each test_data file and saves in results folder</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="heart_rate_reader.parse_data">
+<code class="descclassname">heart_rate_reader.</code><code class="descname">parse_data</code><span class="sig-paren">(</span><em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#heart_rate_reader.parse_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses data from file and gives cleaned (noise reduced)
+version of times, voltages</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> – (string) path to csv file to be parsed</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">avg_times [float]: list of running avg times
+corresponding with voltages
+avg_voltage [float]: list of running avg voltages
+corresponding w/ times
+all_times [float]: list of all times in csv file
+all_voltages [float]: list of all voltages in csv file</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="heart_rate_reader.save_json">
+<code class="descclassname">heart_rate_reader.</code><code class="descname">save_json</code><span class="sig-paren">(</span><em>data</em>, <em>save_path</em><span class="sig-paren">)</span><a class="headerlink" href="#heart_rate_reader.save_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the data inputted as a json file to the save_path specified</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> – dictionary of metrics to save</li>
+<li><strong>save_path</strong> – path to filee (ie where to save json file)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">bme590hrm</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Teresa Mao.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/heart_rate_reader.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
