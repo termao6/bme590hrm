@@ -113,7 +113,7 @@ def find_peaks(times, values):
     """
     local_subset = 500
     peak_thresh = max(values[0:local_subset]) - \
-                (max(values[0:local_subset]) - min(values[0:local_subset]))*.5
+        (max(values[0:local_subset]) - min(values[0:local_subset]))*.25
     peak_times = []
     peak_vals = []
     depolar = False
@@ -121,7 +121,7 @@ def find_peaks(times, values):
         if i % local_subset == 0 and i+local_subset < len(values):
             peak_thresh = max(values[i:i+local_subset]) - \
                           (max(values[i:i+local_subset]) -
-                           min(values[i:i+local_subset]))*.5
+                           min(values[i:i+local_subset]))*.25
         if values[i] > peak_thresh:
             if (values[i-1] > values[i]) and \
                     values[i-1] > values[i-2] and not depolar:
