@@ -111,16 +111,20 @@ def find_peaks(times, values):
         :return: peak_times [float] list of times corresponding to local maxima
             (voltage peaks)
     """
-    v_max = max(values)
-    thresh = abs(v_max - min(values))*.005
-    # print(v_max)
-    print(thresh)
+    local_subset = 500
+    peak_thresh = max(values[0:local_subset]) - \
+                (max(values[0:local_subset]) - min(values[0:local_subset]))*.5
     peak_times = []
     peak_vals = []
     depolar = False
     for i in range(2, len(values)):
-        if values[i] > thresh:
-            if abs(values[i-1] - values[i]) > thresh and values[i-1] > values[i-2] and not depolar:
+        if i % local_subset == 0 and i+local_subset < len(values):
+            peak_thresh = max(values[i:i+local_subset]) - \
+                          (max(values[i:i+local_subset]) -
+                           min(values[i:i+local_subset]))*.5
+        if values[i] > peak_thresh:
+            if (values[i-1] > values[i]) and \
+                    values[i-1] > values[i-2] and not depolar:
                 peak_times.append(times[i-1])
                 peak_vals.append(values[i-1])
                 depolar = True
