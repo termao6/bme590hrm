@@ -1,5 +1,5 @@
 # bme590hrm
-
+[![Build Status](https://travis-ci.org/termao6/bme590hrm.svg?branch=master)](https://travis-ci.org/termao6/bme590hrm)
 ## Standard Features
 * Sphinx documentation: https://termao6.github.io/bme590hrm/
 * Unit tests
